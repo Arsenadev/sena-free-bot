@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sena Free Bot</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  background: #e8eaf0;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  min-height: 100vh;
+  padding: 28px 14px 64px;
+}
+
+.page {
+  max-width: 560px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* ── HEADER CARD ── */
+.header-card {
+  background: #fff;
+  border: 2.5px solid #111;
+  border-radius: 16px;
+  box-shadow: 5px 5px 0 #111;
+  padding: 28px 22px 22px;
+  text-align: center;
+}
+
+.site-tag {
+  display: inline-block;
+  background: #ffe066;
+  border: 2px solid #111;
+  border-radius: 99px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  padding: 3px 14px;
+  margin-bottom: 14px;
+  color: #111;
+}
+
+.site-title {
+  font-family: 'Orbitron', sans-serif;
+  font-size: clamp(26px, 8vw, 44px);
+  font-weight: 900;
+  color: #111;
+  letter-spacing: 2px;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.site-title .ac { color: #3bb8c4; }
+
+.site-sub {
+  font-size: 13px;
+  color: #888;
+  font-weight: 500;
+  margin-top: 8px;
+}
+
+/* ── TICKER ── */
+.ticker-card {
+  background: #3bb8c4;
+  border: 2.5px solid #111;
+  border-radius: 12px;
+  box-shadow: 4px 4px 0 #111;
+  padding: 10px 0;
+  overflow: hidden;
+}
+
+.ticker-track {
+  display: inline-flex;
+  gap: 36px;
+  animation: scroll 22s linear infinite;
+  white-space: nowrap;
+}
+
+.ticker-track span {
+  font-size: 11px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+@keyframes scroll { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+
+/* ── STEPPER ── */
+.stepper-card {
+  background: #fff;
+  border: 2.5px solid #111;
+  border-radius: 14px;
+  box-shadow: 4px 4px 0 #111;
+  padding: 16px 18px 14px;
+}
+
+.stepper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 12px;
+}
+
+.st {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+
+.st-c {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  border: 2px solid #ddd;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  color: #bbb;
+  transition: all .2s;
+}
+
+.st.active .st-c {
+  border-color: #111;
+  background: #ffe066;
+  color: #111;
+  box-shadow: 2px 2px 0 #111;
+}
+
+.st.done .st-c {
+  border-color: #111;
+  background: #3bb8c4;
+  color: #fff;
+  box-shadow: 2px 2px 0 #111;
+}
+
+.st-lbl {
+  font-size: 9px;
+  font-weight: 700;
+  color: #bbb;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+}
+
+.st.active .st-lbl { color: #111; }
+.st.done .st-lbl { color: #3bb8c4; }
+
+.st-line {
+  flex: 1;
+  height: 2px;
+  background: #eee;
+  min-width: 18px;
+  max-width: 44px;
+  margin-bottom: 18px;
+  transition: background .2s;
+}
+
+.st-line.done { background: #3bb8c4; }
+
+.prog-bar {
+  height: 6px;
+  background: #eee;
+  border-radius: 99px;
+  border: 1.5px solid #111;
+  overflow: hidden;
+}
+
+.prog-fill {
+  height: 100%;
+  background: #ffe066;
+  border-radius: 99px;
+  transition: width .4s ease;
+}
+
+/* ── CARD ── */
+.card {
+  display: none;
+  background: #fff;
+  border: 2.5px solid #111;
+  border-radius: 16px;
+  box-shadow: 5px 5px 0 #111;
+  overflow: hidden;
+  animation: popIn .2s ease-out;
+}
+
+.card.active { display: block; }
+
+@keyframes popIn {
+  from { opacity:0; transform:translateY(6px) scale(.98); }
+  to   { opacity:1; transform:translateY(0) scale(1); }
+}
+
+.card-header {
+  background: #ffe066;
+  border-bottom: 2px solid #111;
+  padding: 12px 18px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.card-header.blue { background: #3bb8c4; }
+.card-header.pink { background: #ffb3c6; }
+.card-header.green { background: #b5f2c0; }
+
+.card-header-icon { font-size: 16px; }
+
+.card-header-title {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  color: #111;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+
+.card-body { padding: 20px 18px 18px; }
+
+/* ── FORM ── */
+.field { margin-bottom: 14px; }
+
+.flabel {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  color: #111;
+  letter-spacing: .5px;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+input[type=text], input[type=url] {
+  width: 100%;
+  background: #f7f7f7;
+  border: 2px solid #111;
+  border-radius: 10px;
+  padding: 10px 13px;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  color: #111;
+  outline: none;
+  transition: box-shadow .15s;
+  box-shadow: 3px 3px 0 #111;
+}
+
+input:focus {
+  background: #fffde7;
+  box-shadow: 3px 3px 0 #111;
+}
+
+input::placeholder { color: #bbb; }
+
+/* count pick */
+.count-row { display: flex; gap: 10px; margin-bottom: 14px; }
+
+.count-radio { display: none; }
+
+.count-lbl {
+  flex: 1;
+  padding: 12px 6px;
+  border: 2px solid #ddd;
+  border-radius: 12px;
+  text-align: center;
+  cursor: pointer;
+  transition: all .15s;
+  background: #f7f7f7;
+}
+
+.count-lbl:hover { border-color: #111; }
+
+.count-radio:checked + .count-lbl {
+  border-color: #111;
+  background: #ffe066;
+  box-shadow: 3px 3px 0 #111;
+}
+
+.count-n {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 22px;
+  font-weight: 900;
+  color: #111;
+  line-height: 1;
+  display: block;
+}
+
+.count-t {
+  font-size: 10px;
+  font-weight: 700;
+  color: #666;
+  text-transform: uppercase;
+  margin-top: 3px;
+  display: block;
+}
+
+/* alerts */
+.alert {
+  border-radius: 10px;
+  padding: 11px 13px;
+  margin-bottom: 14px;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.6;
+  border: 2px solid #111;
+}
+
+.alert strong {
+  display: block;
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+  margin-bottom: 3px;
+}
+
+.a-warn { background: #fff0e0; box-shadow: 3px 3px 0 #111; }
+.a-warn strong { color: #e06000; }
+.a-info { background: #e8f7ff; box-shadow: 3px 3px 0 #111; }
+.a-info strong { color: #0077aa; }
+.a-tip  { background: #eafff0; box-shadow: 3px 3px 0 #111; }
+.a-tip  strong { color: #00882a; }
+
+/* syarat box */
+.syarat-box {
+  background: #f7f7f7;
+  border: 2px solid #111;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 14px;
+  box-shadow: 3px 3px 0 #111;
+}
+
+.syarat-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  border-bottom: 2px solid #111;
+  background: #eee;
+}
+
+.syarat-tag {
+  font-size: 10px;
+  font-weight: 800;
+  color: #555;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.copy-btn {
+  background: #ffe066;
+  border: 2px solid #111;
+  border-radius: 6px;
+  color: #111;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .5px;
+  padding: 3px 10px;
+  cursor: pointer;
+  transition: all .15s;
+  text-transform: uppercase;
+  box-shadow: 2px 2px 0 #111;
+}
+
+.copy-btn:active { transform: translate(2px,2px); box-shadow: none; }
+.copy-btn.ok { background: #b5f2c0; }
+
+.syarat-body {
+  padding: 14px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #333;
+  line-height: 1.85;
+  white-space: pre-wrap;
+}
+
+/* follow link */
+.follow-link {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  padding: 13px 14px;
+  background: #e8f7ff;
+  border: 2px solid #111;
+  border-radius: 12px;
+  text-decoration: none;
+  box-shadow: 3px 3px 0 #111;
+  transition: transform .15s, box-shadow .15s;
+  margin-bottom: 16px;
+}
+
+.follow-link:active { transform: translate(3px,3px); box-shadow: none; }
+
+.follow-av {
+  width: 40px; height: 40px;
+  background: #3bb8c4;
+  border: 2px solid #111;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+  box-shadow: 2px 2px 0 #111;
+}
+
+.follow-info strong {
+  display: block;
+  font-size: 13px;
+  font-weight: 800;
+  color: #111;
+  margin-bottom: 2px;
+}
+
+.follow-info span {
+  font-size: 11px;
+  font-weight: 500;
+  color: #666;
+}
+
+/* checklist */
+.cl { list-style: none; margin-bottom: 14px; }
+
+.cl li {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 9px 0;
+  border-bottom: 1.5px solid #eee;
+  font-size: 13px;
+  font-weight: 500;
+  color: #333;
+  line-height: 1.5;
+}
+
+.cl li:last-child { border: none; }
+
+.ci {
+  width: 22px; height: 22px;
+  background: #3bb8c4;
+  border: 2px solid #111;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 10px;
+  font-weight: 800;
+  color: #fff;
+  flex-shrink: 0;
+  box-shadow: 1px 1px 0 #111;
+}
+
+/* buttons */
+.btn {
+  display: block;
+  width: 100%;
+  padding: 13px 20px;
+  border-radius: 12px;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: .5px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: transform .15s, box-shadow .15s;
+  text-decoration: none;
+  text-align: center;
+  border: 2px solid #111;
+}
+
+.btn:active { transform: translate(3px,3px) !important; box-shadow: none !important; }
+
+.btn-p {
+  background: #ffe066;
+  color: #111;
+  box-shadow: 4px 4px 0 #111;
+}
+
+.btn-p:hover { transform: translate(-1px,-1px); box-shadow: 5px 5px 0 #111; }
+
+.btn-g {
+  background: #f0f0f0;
+  color: #666;
+  box-shadow: 3px 3px 0 #ddd;
+  margin-top: 10px;
+  border-color: #ccc;
+}
+
+.btn-g:hover { border-color: #111; color: #111; box-shadow: 3px 3px 0 #111; }
+
+.btn-wa {
+  background: #25D366;
+  color: #fff;
+  box-shadow: 4px 4px 0 #111;
+}
+
+.btn-wa:hover { transform: translate(-1px,-1px); box-shadow: 5px 5px 0 #111; }
+
+/* final */
+.fin { text-align: center; padding: 6px 0 12px; }
+
+.fin-emoji { font-size: 48px; display: block; margin-bottom: 12px; }
+
+.fin-title {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 18px;
+  font-weight: 900;
+  color: #111;
+  margin-bottom: 8px;
+  letter-spacing: 1px;
+}
+
+.fin-sub {
+  font-size: 14px;
+  font-weight: 500;
+  color: #666;
+  line-height: 1.75;
+  margin-bottom: 20px;
+}
+
+.fin-sub b { color: #111; font-weight: 800; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header-card">
+    <div class="site-tag">🤖 ArsenaDev Ofc</div>
+    <div class="site-title">SENA FREE <span class="ac">BOT</span></div>
+    <div class="site-sub">WhatsApp Bot Registration System</div>
+  </div>
+
+  <!-- TICKER -->
+  <div class="ticker-card">
+    <div class="ticker-track">
+      <span>✦ No PM</span>
+      <span>✦ No Spam</span>
+      <span>✦ No Call Owner</span>
+      <span>✦ Wajib Adminkan Bot</span>
+      <span>✦ Follow Saluran Owner</span>
+      <span>✦ Kirim Bukti ke Owner</span>
+      <span>✦ No PM</span>
+      <span>✦ No Spam</span>
+      <span>✦ No Call Owner</span>
+      <span>✦ Wajib Adminkan Bot</span>
+      <span>✦ Follow Saluran Owner</span>
+      <span>✦ Kirim Bukti ke Owner</span>
+    </div>
+  </div>
+
+  <!-- STEPPER -->
+  <div class="stepper-card">
+    <div class="stepper">
+      <div class="st active" id="st1"><div class="st-c">01</div><div class="st-lbl">Grup</div></div>
+      <div class="st-line" id="ln1"></div>
+      <div class="st" id="st2"><div class="st-c">02</div><div class="st-lbl">Syarat</div></div>
+      <div class="st-line" id="ln2"></div>
+      <div class="st" id="st3"><div class="st-c">03</div><div class="st-lbl">Follow</div></div>
+      <div class="st-line" id="ln3"></div>
+      <div class="st" id="st4"><div class="st-c">04</div><div class="st-lbl">Kirim</div></div>
+    </div>
+    <div class="prog-bar"><div class="prog-fill" id="progFill" style="width:25%"></div></div>
+  </div>
+
+  <!-- STEP 1 -->
+  <div class="card active" id="step1">
+    <div class="card-header">
+      <span class="card-header-icon">📋</span>
+      <span class="card-header-title">Info Grup WhatsApp</span>
+    </div>
+    <div class="card-body">
+
+      <div class="field">
+        <label class="flabel" for="namaUser">Nama Kamu</label>
+        <input type="text" id="namaUser" placeholder="Masukkan nama kamu..." maxlength="50">
+      </div>
+
+      <div class="field">
+        <label class="flabel" for="komentarUser">Komentar / Pesan</label>
+        <input type="text" id="komentarUser" placeholder="contoh: untuk grup gaming saya..." maxlength="120">
+      </div>
+
+      <div class="field">
+        <label class="flabel">Berapa grup yang ingin ditambahkan?</label>
+        <div class="count-row">
+          <input type="radio" name="jml" id="g1" value="1" class="count-radio" checked>
+          <label class="count-lbl" for="g1"><span class="count-n">1</span><span class="count-t">Grup</span></label>
+          <input type="radio" name="jml" id="g2" value="2" class="count-radio">
+          <label class="count-lbl" for="g2"><span class="count-n">2</span><span class="count-t">Grup</span></label>
+          <input type="radio" name="jml" id="g3" value="3" class="count-radio">
+          <label class="count-lbl" for="g3"><span class="count-n">3</span><span class="count-t">Grup</span></label>
+        </div>
+      </div>
+
+      <div id="lw1" class="field">
+        <label class="flabel" for="lg1">Link Grup 1</label>
+        <input type="url" id="lg1" placeholder="https://chat.whatsapp.com/xxxxxx" maxlength="200">
+      </div>
+      <div id="lw2" class="field" style="display:none">
+        <label class="flabel" for="lg2">Link Grup 2</label>
+        <input type="url" id="lg2" placeholder="https://chat.whatsapp.com/xxxxxx" maxlength="200">
+      </div>
+      <div id="lw3" class="field" style="display:none">
+        <label class="flabel" for="lg3">Link Grup 3</label>
+        <input type="url" id="lg3" placeholder="https://chat.whatsapp.com/xxxxxx" maxlength="200">
+      </div>
+
+      <div class="alert a-warn">
+        <strong>⚠ Perhatian</strong>
+        Maks 3 grup · Link harus aktif & valid · Kamu harus admin grup
+      </div>
+
+      <button class="btn btn-p" onclick="goStep(2)">Lanjut →</button>
+    </div>
+  </div>
+
+  <!-- STEP 2 -->
+  <div class="card" id="step2">
+    <div class="card-header blue">
+      <span class="card-header-icon">📜</span>
+      <span class="card-header-title">Syarat Penggunaan Bot</span>
+    </div>
+    <div class="card-body">
+      <p style="font-size:13px;color:#555;margin-bottom:14px;line-height:1.6;font-weight:500">
+        Salin dan kirim teks ini ke <b style="color:#111">grup kamu</b> sebelum bot masuk. Wajib agar member tahu aturannya.
+      </p>
+
+      <div class="syarat-box">
+        <div class="syarat-top">
+          <span class="syarat-tag">Aturan Bot</span>
+          <button class="copy-btn" id="copyBtn" onclick="copySyarat()">Copy</button>
+        </div>
+        <div class="syarat-body" id="syaratText">📌 *ATURAN PENGGUNAAN BOT*
+
+❌ NO PM — Dilarang PM bot secara pribadi
+❌ NO SPAM — Dilarang spam perintah bot
+❌ NO CALL — Dilarang hubungi owner via telpon/video call
+⚠️ Bot wajib di-admin-kan agar bisa berfungsi penuh
+⚠️ Penyalahgunaan bot = dikeluarkan dari grup
+✅ Gunakan bot sewajarnya & hormati sesama member
+
+🤖 Powered by aboutsena.web.id</div>
+      </div>
+
+      <div class="alert a-info">
+        <strong>💡 Cara Kirim</strong>
+        Copy teks → buka grup WA → paste & kirim → screenshot untuk bukti ke owner.
+      </div>
+
+      <button class="btn btn-p" onclick="goStep(3)">Sudah Dikirim →</button>
+      <button class="btn btn-g" onclick="goStep(1)">← Kembali</button>
+    </div>
+  </div>
+
+  <!-- STEP 3 -->
+  <div class="card" id="step3">
+    <div class="card-header pink">
+      <span class="card-header-icon">📢</span>
+      <span class="card-header-title">Follow Saluran Owner</span>
+    </div>
+    <div class="card-body">
+      <p style="font-size:13px;color:#555;margin-bottom:14px;line-height:1.6;font-weight:500">
+        Syarat wajib: follow saluran WhatsApp owner. Setelah follow, screenshot sebagai bukti.
+      </p>
+
+      <a class="follow-link" href="https://whatsapp.com/channel/0029VbCyzd99Bb5sXWGwGE29" target="_blank">
+        <div class="follow-av">📢</div>
+        <div class="follow-info">
+          <strong>Arsena Official — Saluran WA</strong>
+          <span>Tap untuk buka & follow saluran →</span>
+        </div>
+      </a>
+
+      <ul class="cl">
+        <li><span class="ci">1</span><span>Buka link saluran di atas lewat WhatsApp</span></li>
+        <li><span class="ci">2</span><span>Tap tombol <b>Follow</b> di dalam saluran</span></li>
+        <li><span class="ci">3</span><span>Screenshot halaman saluran setelah berhasil follow</span></li>
+      </ul>
+
+      <div class="alert a-tip">
+        <strong>📸 Bukti Foto</strong>
+        Foto bukti dikirim langsung via WhatsApp ke owner, bukan di web ini.
+      </div>
+
+      <button class="btn btn-p" onclick="goStep(4)">Sudah Follow →</button>
+      <button class="btn btn-g" onclick="goStep(2)">← Kembali</button>
+    </div>
+  </div>
+
+  <!-- STEP 4 -->
+  <div class="card" id="step4">
+    <div class="card-header green">
+      <span class="card-header-icon">🚀</span>
+      <span class="card-header-title">Hubungi Owner</span>
+    </div>
+    <div class="card-body">
+      <div class="fin">
+        <span class="fin-emoji">🤖</span>
+        <div class="fin-title">Siap! Hubungi Owner</div>
+        <p class="fin-sub">
+          Kirim ke owner via WhatsApp:<br>
+          <b>(1)</b> Screenshot bukti follow saluran<br>
+          <b>(2)</b> Screenshot bukti kirim aturan ke grup<br><br>
+          Teks pesan otomatis terisi saat tombol ditekan.<br>
+          Tunggu respon — bot masuk setelah dikonfirmasi.<br>
+          <span style="color:#e06000;font-weight:700">Wajib adminkan bot setelah masuk!</span>
+        </p>
+
+        <div class="alert a-warn" style="text-align:left;margin-bottom:20px">
+          <strong>🚫 Ingat</strong>
+          NO SPAM · NO CALL · Jangan PM owner di luar keperluan ini
+        </div>
+
+        <a class="btn btn-wa" href="#" onclick="openWA(event)">💬 Chat Owner di WhatsApp</a>
+        <button class="btn btn-g" onclick="goStep(3)" style="margin-top:10px">← Kembali</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+<script>
+  let cur = 1;
+  const total = 4;
+
+  document.querySelectorAll('input[name="jml"]').forEach(r => {
+    r.addEventListener('change', function() {
+      const n = parseInt(this.value);
+      for (let i = 1; i <= 3; i++) {
+        document.getElementById('lw'+i).style.display = i <= n ? 'block' : 'none';
+        if (i > n) document.getElementById('lg'+i).value = '';
+      }
+    });
+  });
+
+  function getLinks() {
+    const n = parseInt(document.querySelector('input[name="jml"]:checked').value);
+    return Array.from({length:n}, (_,i) => document.getElementById('lg'+(i+1)).value.trim());
+  }
+
+  function goStep(n) {
+    if (n > 1 && cur === 1) {
+      const nama = document.getElementById('namaUser').value.trim();
+      if (!nama) { alert('⚠ Masukkan nama kamu dulu!'); return; }
+      const links = getLinks();
+      for (let i = 0; i < links.length; i++) {
+        if (!links[i]) { alert(`⚠ Link Grup ${i+1} belum diisi!`); return; }
+        if (!links[i].startsWith('https://chat.whatsapp.com/')) {
+          alert(`⚠ Link Grup ${i+1} harus diawali https://chat.whatsapp.com/`); return;
+        }
+      }
+    }
+
+    document.getElementById('step'+cur).classList.remove('active');
+    document.getElementById('step'+cur).style.display = 'none';
+    cur = n;
+    const el = document.getElementById('step'+n);
+    el.style.display = 'block';
+    el.classList.add('active');
+
+    for (let i = 1; i <= total; i++) {
+      const s = document.getElementById('st'+i);
+      s.classList.remove('active','done');
+      if (i < n) s.classList.add('done');
+      else if (i === n) s.classList.add('active');
+    }
+    for (let i = 1; i < total; i++) {
+      const l = document.getElementById('ln'+i);
+      if (l) l.classList.toggle('done', i < n);
+    }
+
+    document.getElementById('progFill').style.width = ((n/total)*100)+'%';
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+
+  function copySyarat() {
+    const text = document.getElementById('syaratText').textContent;
+    const btn = document.getElementById('copyBtn');
+    const ok = () => {
+      btn.textContent = 'Copied ✓';
+      btn.classList.add('ok');
+      setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('ok'); }, 2000);
+    };
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(text).then(ok).catch(() => fallback(text, ok));
+    } else { fallback(text, ok); }
+  }
+
+  function fallback(text, cb) {
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.cssText = 'position:fixed;top:-9999px;left:-9999px;opacity:0';
+    document.body.appendChild(ta);
+    ta.focus(); ta.select();
+    try { document.execCommand('copy'); cb(); } catch(e) { alert('Gagal copy, coba manual ya!'); }
+    document.body.removeChild(ta);
+  }
+
+  function openWA(e) {
+    e.preventDefault();
+    const nama = document.getElementById('namaUser').value.trim() || 'saya';
+    const komentar = document.getElementById('komentarUser').value.trim() || 'Ingin menambahkan bot ke grup saya.';
+    const links = getLinks();
+    const linkTeks = links.length === 1
+      ? links[0]
+      : links.map((l,i) => `Grup ${i+1}: ${l}`).join('\n│ ');
+    const msg = `╭─「 📩 REQUEST ADD BOT 」\n│\n│ 👤 Nama: ${nama}\n│ 💬 ${komentar}\n│ 🔗 ${linkTeks}\n│\n╰───────────────`;
+    window.open('https://wa.me/447401933411?text=' + encodeURIComponent(msg), '_blank');
+  }
+</script>
+</body>
+</html>
